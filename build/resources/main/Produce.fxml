@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+
+<?import java.net.URL?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ProduceController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <Label styleClass='label' text=" This is the Produce Tab  " translateX="10"></Label>
+
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+
+</AnchorPane>
