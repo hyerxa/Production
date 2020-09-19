@@ -1,6 +1,6 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 
 import java.sql.*;
 
@@ -10,12 +10,32 @@ public class ProductLineController {
     Button addProduct;
 
     @FXML
-    private void setAddProduct(ActionEvent event) {
-        System.out.println("Add Product");
+    private TextField productName;
+
+    @FXML
+    private ChoiceBox<String> itemType;
+
+    @FXML
+    private TextField manufacturer;
+
+    @FXML
+    private TableView<?> productTable;
+
+    @FXML
+    private TableColumn<?, ?> productNameCol;
+
+    @FXML
+    private TableColumn<?, ?> manufacturerCol;
+
+    @FXML
+    private TableColumn<?, ?> itemTypeCol;
+
+    @FXML
+    private void addProduct(ActionEvent event) {
+        connectToDb();
     }
 
     public void initialize() {
-        connectToDb();
     }
 
     public void connectToDb() {
@@ -38,11 +58,25 @@ public class ProductLineController {
             //STEP 3: Execute a query
             stmt = conn.createStatement();
 
-            String sql = "SELECT * FROM place ";
+            String prodName = productName.getText();
+            String man = manufacturer.getText();
+            String type = itemType.getValue();
 
-            ResultSet rs = stmt.executeQuery(sql);
+            String sql = "INSERT INTO Product(type, manufacturer, name) VALUES (?,?,?)";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, type);
+            preparedStatement.setString(2, man);
+            preparedStatement.setString(3, prodName);
+
+            preparedStatement.executeUpdate();
+
+            String sql2 = "SELECT name, manufacturer, type FROM Product";
+
+            ResultSet rs = stmt.executeQuery(sql2);
+
             while (rs.next()) {
-                System.out.println(rs.getString(1));
+                System.out.println("Name: " + rs.getString(1) + ", Manufacturer: " + rs.getString(2) + ", Type: " + rs.getString(3));
             }
 
             // STEP 4: Clean-up environment
