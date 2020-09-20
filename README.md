@@ -2,6 +2,7 @@
 One paragraph of project description goes here.
 Briefly address the 5 W's.
 What is the project?
+
 Who made it? Did you make it independently or with a team?
 When did you make it? At what level of experience and proficiency were / are you?
 Why did you make it? For fun? For an assignment? How does it relect you as a person?
@@ -18,3 +19,4 @@ Note for school project: this may be the only thing someone visiting your page r
 ## Acknowledgments
 ## History
 ## Key Programming Concepts Utilized
+file:///C:/Users/haley/Documents/Production/docs/package-summary.html
