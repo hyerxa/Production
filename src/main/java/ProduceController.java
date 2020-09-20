@@ -12,9 +12,15 @@ import javafx.scene.control.ComboBox;
  */
 public class ProduceController {
 
+  /**
+   * Button to record production.
+   */
   @FXML
   Button recordProduction;
 
+  /**
+   * Combobox with quantity options.
+   */
   @FXML
   private ComboBox<String> quantity;
 

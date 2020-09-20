@@ -14,10 +14,19 @@ import javafx.scene.layout.AnchorPane;
  */
 public class Controller implements Initializable {
 
+  /**
+   * The productLine tab.
+   */
   @FXML
   Tab productLine;
+  /**
+   * The produce Tab.
+   */
   @FXML
   Tab produce;
+  /**
+   * The production Log Tab.
+   */
   @FXML
   Tab productionLog;
 

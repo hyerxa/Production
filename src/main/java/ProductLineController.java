@@ -19,27 +19,51 @@ import javafx.scene.control.TextField;
  */
 public class ProductLineController {
 
+  /**
+   * Button to submit new product.
+   */
   @FXML
   Button addProduct;
 
+  /**
+   * Text field for user input of new product name.
+   */
   @FXML
   private TextField productName;
 
+  /**
+   * Choice Box for type of new item.
+   */
   @FXML
   private ChoiceBox<String> itemType;
 
+  /**
+   * Text field for user input of manufacturer.
+   */
   @FXML
   private TextField manufacturer;
 
+  /**
+   * Table to display products.
+   */
   @FXML
   private TableView<?> productTable;
 
+  /**
+   * Column in table for productName.
+   */
   @FXML
   private TableColumn<?, ?> productNameCol;
 
+  /**
+   * Column in table for manufacturer.
+   */
   @FXML
   private TableColumn<?, ?> manufacturerCol;
 
+  /**
+   * Column in table for item type.
+   */
   @FXML
   private TableColumn<?, ?> itemTypeCol;
 
