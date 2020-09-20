@@ -7,17 +7,17 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="586.0" prefWidth="613.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProduceController">
+<AnchorPane prefHeight="586.0" prefWidth="613.0" xmlns="http://javafx.com/javafx/11.0.1"
+  xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProduceController">
 
-    <stylesheets>
-        <URL value="@style.css" />
-    </stylesheets>
-   <children>
-      <Label layoutX="38.0" layoutY="51.0" text="Choose Product" />
-      <ListView layoutX="200.0" layoutY="42.0" prefHeight="36.0" prefWidth="200.0" />
-      <Label layoutX="34.0" layoutY="100.0" text="Choose Quantity" />
-      <ComboBox fx:id="quantity" layoutX="200.0" layoutY="100.0" prefHeight="30.0" prefWidth="200.0" />
-      <Button fx:id="recordProduction" layoutX="425.0" layoutY="66.0" mnemonicParsing="false" onAction="#setRecordProduction" text="Record Production" />
-   </children>
+  <stylesheets>
+    <URL value="@style.css"/>
+  </stylesheets>
 
+  <Label layoutX="38.0" layoutY="51.0" text="Choose Product"/>
+  <ListView layoutX="200.0" layoutY="42.0" prefHeight="36.0" prefWidth="200.0"/>
+  <Label layoutX="34.0" layoutY="100.0" text="Choose Quantity"/>
+  <ComboBox fx:id="quantity" layoutX="200.0" layoutY="100.0" prefHeight="30.0" prefWidth="200.0"/>
+  <Button fx:id="recordProduction" layoutX="425.0" layoutY="66.0" mnemonicParsing="false"
+    onAction="#setRecordProduction" text="Record Production"/>
 </AnchorPane>

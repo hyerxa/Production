@@ -6,23 +6,21 @@
 
 <?import java.net.URL?>
 <AnchorPane fx:controller="Controller"
-            xmlns:fx="http://javafx.com/fxml" >
-    <children>
-        <TabPane styleClass='tabPane'>
-            <Tab styleClass='tab' fx:id="productLine" text="Product Line">
-            </Tab>
+  xmlns:fx="http://javafx.com/fxml">
 
-            <Tab styleClass='tab' fx:id="produce" text="Produce">
-            </Tab>
+  <stylesheets>
+    <URL value="@style.css"/>
+  </stylesheets>
 
-            <Tab styleClass='tab' fx:id="productionLog" text="Production Log">
-            </Tab>
+  <TabPane styleClass='tabPane'>
+    <Tab styleClass='tab' fx:id="productLine" text="Product Line">
+    </Tab>
 
-        </TabPane>
-    </children>
+    <Tab styleClass='tab' fx:id="produce" text="Produce">
+    </Tab>
 
-    <stylesheets>
-        <URL value="@style.css" />
-    </stylesheets>
+    <Tab styleClass='tab' fx:id="productionLog" text="Production Log">
+    </Tab>
 
+  </TabPane>
 </AnchorPane>
