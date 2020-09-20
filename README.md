@@ -1,20 +1,24 @@
 # Production
-One paragraph of project description goes here.
-Briefly address the 5 W's.
-What is the project?
-Who made it? Did you make it independently or with a team?
-When did you make it? At what level of experience and proficiency were / are you?
-Why did you make it? For fun? For an assignment? How does it relect you as a person?
-Where did you make it? What school / class?
-Note for school project: this may be the only thing someone visiting your page reads. Try to make a great impression. Make someone want to hire you. This section will also be useful to you in the future to remind you about the project.
+This project is a software for a media player production facility that keeps track of what products are produced. 
+This was made by author Haley Yerxa as a class project, with some assistance from Professor Scott Vanselow, student assistants, and classmates.
+Created Fall 2020, a semester long project as a 3rd year software engineering student in Object Oriented Programming class.
+Was made in class as an assignment, but was taken as a challenge to further skills and become more proficient in Java and associated OOP skills.
 ## Demonstration
+![Sample GIF](<iframe src="https://giphy.com/embed/a3fm4GiVI2vg6zWjCk" width="466" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/a3fm4GiVI2vg6zWjCk">via GIPHY</a></p>)
 ## Documentation
+[JavaDoc](file:///C:/Users/haley/Documents/Production/docs/package-summary.html)
 ## Diagrams
 ## Getting Started
 ## Built With
+* Intellij Ultimate
+* JavaFx
+* Gradle
 ## Contributing
 ## Author
+Haley Yerxa
 ## License
 ## Acknowledgments
+Professor Scott Vanselow
 ## History
 ## Key Programming Concepts Utilized
+
