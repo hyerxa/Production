@@ -4,7 +4,7 @@ This was made by author Haley Yerxa as a class project, with some assistance fro
 Created Fall 2020, a semester long project as a 3rd year software engineering student in Object Oriented Programming class.
 Was made in class as an assignment, but was taken as a challenge to further skills and become more proficient in Java and associated OOP skills.
 ## Demonstration
-![Sample GIF](https://giphy.com/gifs/a3fm4GiVI2vg6zWjCk)
+![Sample GIF](<iframe src="https://giphy.com/embed/a3fm4GiVI2vg6zWjCk" width="466" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/a3fm4GiVI2vg6zWjCk">via GIPHY</a></p>)
 ## Documentation
 [JavaDoc](file:///C:/Users/haley/Documents/Production/docs/package-summary.html)
 ## Diagrams
