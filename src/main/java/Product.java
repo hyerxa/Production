@@ -11,7 +11,7 @@ public abstract class Product implements Item {
   }
 
   public String toString() {
-    return "name: " + name + "\n" + "manufacturer: " + manufacturer + "\n" + "type: "
+    return "Name: " + name + "\n" + "Manufacturer: " + manufacturer + "\n" + "Type: "
         + type;
   }
 
@@ -19,19 +19,19 @@ public abstract class Product implements Item {
     return id;
   }
 
-  public String getmanufacturer() {
+  public String getManufacturer() {
     return manufacturer;
   }
 
-  public void setmanufacturer(String manufacturer) {
+  public void setManufacturer(String manufacturer) {
     this.manufacturer = manufacturer;
   }
 
-  public String getname() {
+  public String getName() {
     return name;
   }
 
-  public void setname(String name) {
+  public void setName(String name) {
     this.name = name;
   }
 }
