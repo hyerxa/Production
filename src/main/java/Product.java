@@ -1,8 +1,10 @@
 public abstract class Product implements Item {
-  private int id;
-  private String type;
-  private String manufacturer;
-  private String name;
+  int id;
+  String type;
+  String manufacturer;
+  String name;
+
+  Product(){}
 
   Product(String name, String manufacturer, String type) {
     this.name = name;
