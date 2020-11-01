@@ -9,6 +9,7 @@ import javafx.stage.Stage;
  * Starts Javafx application.
  * Haley Yerxa
  */
+
 public class Main extends Application {
 
   public static void main(String[] args) {
@@ -29,5 +30,6 @@ public class Main extends Application {
     primaryStage.setTitle("Haley Yerxa Production");
     primaryStage.setScene(scene);
     primaryStage.show();
+
   }
 }

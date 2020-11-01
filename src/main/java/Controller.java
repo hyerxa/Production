@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,25 @@ import javafx.scene.layout.AnchorPane;
  * Haley Yerxa
  */
 public class Controller implements Initializable {
+
+  public static void testMultimedia() {
+
+    AudioPlayer newAudioProduct = new AudioPlayer("DP-X1A", "Onkyo", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL", 0);
+    Screen newScreen = new Screen("720x480", 40, 22);
+    MoviePlayer newMovieProduct = new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD, 0);
+    ArrayList<MultimediaControl> productList = new ArrayList<MultimediaControl>();
+    productList.add(newAudioProduct);
+    productList.add(newMovieProduct);
+
+    for (MultimediaControl p : productList) {
+      System.out.println(p);
+      p.play();
+      p.stop();
+      p.next();
+      p.previous();
+
+    }
+  }
 
   /**
    * The productLine tab.
@@ -35,6 +55,9 @@ public class Controller implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+
+    testMultimedia();
+
     try {
       AnchorPane anch1 = FXMLLoader.load(getClass().getResource("ProductLine.fxml"));
       productLine.setContent(anch1);
@@ -51,10 +74,12 @@ public class Controller implements Initializable {
 
     try {
       AnchorPane anch3 = FXMLLoader.load(getClass().getResource("ProductionLog.fxml"));
-      productionLog.setContent(anch3);
+      productionLog.setContent(anch3);;
     } catch (IOException iex) {
       System.out.println("unable to load production log");
     }
+
+
 
   }
 

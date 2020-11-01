@@ -1,39 +1,97 @@
 public abstract class Product implements Item {
-  int id;
-  String type;
-  String manufacturer;
-  String name;
 
-  Product(){}
+  private int Id;
+  private ItemType Type;
+  private String Manufacturer;
+  private String Name;
 
-  Product(String name, String manufacturer, String type) {
-    this.name = name;
-    this.manufacturer = manufacturer;
-    this.type = type;
+  private static int audioCount = 0;
+  private static int visualCount = 0;
+  private static int audioMobileCount = 0;
+  private static int visualMobileCount = 0;
+
+
+  Product(String name, String manufacturer, ItemType type, int id) {
+    this.Name = name;
+    this.Manufacturer = manufacturer;
+    this.Type = type;
+    this.Id = id;
   }
 
   public String toString() {
-    return "Name: " + name + "\n" + "Manufacturer: " + manufacturer + "\n" + "Type: "
-        + type;
+    return "Name: " + Name + "\n" + "Manufacturer: " + Manufacturer + "\n" + "Type: "
+            + Type.getCode();
+  }
+
+  public ItemType getType() {
+    return Type;
+  }
+
+  public void setType(ItemType type) {
+    Type = type;
+  }
+
+  public void setId(int id) {
+    Id = id;
   }
 
   public int getId() {
-    return id;
+    return Id;
   }
 
   public String getManufacturer() {
-    return manufacturer;
+    return Manufacturer;
   }
 
   public void setManufacturer(String manufacturer) {
-    this.manufacturer = manufacturer;
+    Manufacturer = manufacturer;
   }
 
   public String getName() {
-    return name;
+    return Name;
   }
 
   public void setName(String name) {
-    this.name = name;
+    Name = name;
   }
+
+  public static int getAudioCount() {
+    return audioCount;
+  }
+
+  public static void setAudioCount(int audioCount) {
+    Product.audioCount = audioCount;
+  }
+
+  public static int getVisualMobileCount() {
+    return visualMobileCount;
+  }
+
+  public static void setVisualMobileCount(int visualMobileCount) {
+    Product.visualMobileCount = visualMobileCount;
+  }
+
+  public static int getAudioMobileCount() {
+    return audioMobileCount;
+  }
+
+  public static void setAudioMobileCount(int audioMobileCount) {
+    Product.audioMobileCount = audioMobileCount;
+  }
+
+  public static int getVisualCount() {
+    return visualCount;
+  }
+
+  public static void setVisualCount(int visualCount) {
+    Product.visualCount = visualCount;
+  }
+}
+
+class Widget extends Product {
+
+  Widget(String name, String manufacturer, ItemType type, int id) {
+    super(name, manufacturer, type, id);
+  }
+
 }
