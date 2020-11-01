@@ -6,19 +6,22 @@ public class ProductionRecord {
     private int productId;
     private String serialNumber;
     private Date dateProduced;
+    private String productName;
 
     ProductionRecord(int productId) {
         this.productionNumber = 0;
         this.productId = productId;
         this.serialNumber = "0";
         this.dateProduced = new Date();
+        this.productName = "N/A";
     }
 
-    ProductionRecord(int productionNumber, int productId, String serialNumber, Date dateProduced) {
+    ProductionRecord(int productionNumber, int productId, String serialNumber, Date dateProduced, String name) {
         this.productionNumber = productionNumber;
         this.productId = productId;
         this.serialNumber = serialNumber;
         this.dateProduced = dateProduced;
+        this.productName = name;
     }
 
     ProductionRecord(Product product, int count) {
@@ -33,6 +36,7 @@ public class ProductionRecord {
         this.productionNumber = 0;
         this.dateProduced = new Date();
         this.serialNumber = product.getManufacturer().substring(0,3) + product.getType().getCode() + countString.toString();
+        this.productName = product.getName();
     }
 
     public int getProductionNumber() {
@@ -68,6 +72,6 @@ public class ProductionRecord {
     }
 
     public String toString() {
-        return "Prod. Num: " + productionNumber + " Prod. ID: " + productId + " Serial Num: " + serialNumber + " Date: " + dateProduced;
+        return "Prod. Num: " + productionNumber + " Prod. Name: " + productName + " Serial Num: " + serialNumber + " Date: " + dateProduced;
     }
 }

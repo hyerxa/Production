@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
  * Will control production log file once functionality is added.
  * Haley Yerxa
  */
-public class ProductionLogController implements Initializable {
+public class ProductionLogController {
 
     @FXML
     private TextArea productionLog;
@@ -76,7 +76,7 @@ public class ProductionLogController implements Initializable {
         }
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize() {
         getText();
     }
 
