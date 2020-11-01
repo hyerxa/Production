@@ -41,27 +41,12 @@ public class ProductionLogController {
             stmt = conn.createStatement();
 
             // Retrieve all entries in table
-            String sql2 = "SELECT name, manufacturer, type, ID FROM Product";
+            String sql2 = "SELECT production_num, product_id, serial_num, date_produced, name FROM ProductionRecord";
 
             ResultSet rs = stmt.executeQuery(sql2);
 
             while (rs.next()) {
-                ProductionRecord productionRecord;
-                switch(rs.getString(3)) {
-                    case "AUDIO":
-                        AudioPlayer audioProduct = new AudioPlayer(rs.getString(1), rs.getString(2), rs.getInt(4));
-                        Product.setAudioCount(Product.getAudioCount()+1);
-                        productionRecord = new ProductionRecord(audioProduct, Product.getAudioCount());
-                        break;
-                    case "VIDEO":
-                        MoviePlayer videoProduct = new MoviePlayer(rs.getString(1), rs.getString(2), rs.getInt(4));
-                        Product.setVisualCount(Product.getVisualCount()+1);
-                        productionRecord = new ProductionRecord(videoProduct, Product.getVisualCount());
-                        break;
-                    default:
-                        productionRecord = new ProductionRecord(rs.getInt(4));
-                }
-
+                ProductionRecord productionRecord = new ProductionRecord(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4), rs.getString(5));
                 textAreaOutput.append(productionRecord.toString() + "\n");
             }
 
