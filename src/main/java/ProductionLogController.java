@@ -41,12 +41,12 @@ public class ProductionLogController {
             stmt = conn.createStatement();
 
             // Retrieve all entries in table
-            String sql2 = "SELECT production_num, product_id, serial_num, date_produced, name FROM ProductionRecord";
+            String sql2 = "SELECT production_num, product_id, serial_num, date_produced FROM ProductionRecord";
 
             ResultSet rs = stmt.executeQuery(sql2);
 
             while (rs.next()) {
-                ProductionRecord productionRecord = new ProductionRecord(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4), rs.getString(5));
+                ProductionRecord productionRecord = new ProductionRecord(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4));
                 textAreaOutput.append(productionRecord.toString() + "\n");
             }
 

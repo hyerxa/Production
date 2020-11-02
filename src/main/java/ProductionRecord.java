@@ -16,12 +16,12 @@ public class ProductionRecord {
         this.productName = "N/A";
     }
 
-    ProductionRecord(int productionNumber, int productId, String serialNumber, Date dateProduced, String name) {
+    ProductionRecord(int productionNumber, int productId, String serialNumber, Date dateProduced) {
         this.productionNumber = productionNumber;
         this.productId = productId;
         this.serialNumber = serialNumber;
         this.dateProduced = dateProduced;
-        this.productName = name;
+        this.productName = "name";
     }
 
     ProductionRecord(Product product, int count) {
@@ -72,6 +72,6 @@ public class ProductionRecord {
     }
 
     public String toString() {
-        return "Prod. Num: " + productionNumber + " Prod. Name: " + productName + " Serial Num: " + serialNumber + " Date: " + dateProduced;
+        return "Prod. Num: " + productionNumber + " Prod. Id: " + productId + " Serial Num: " + serialNumber + " Date: " + dateProduced;
     }
 }

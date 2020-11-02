@@ -13,9 +13,9 @@
     <URL value="@style.css" />
   </stylesheets>
 
-  <Label layoutX="38.0" layoutY="51.0" text="Choose Product" />
-  <ListView fx:id="prodList" layoutX="200.0" layoutY="42.0" prefHeight="36.0" prefWidth="200.0" />
-  <Label layoutX="34.0" layoutY="100.0" text="Choose Quantity" />
-  <ComboBox fx:id="quantity" layoutX="200.0" layoutY="100.0" prefHeight="30.0" prefWidth="200.0" />
-  <Button fx:id="recordProduction" layoutX="425.0" layoutY="66.0" mnemonicParsing="false" onAction="#setRecordProduction" text="Record Production" />
+  <Label layoutX="83.0" layoutY="42.0" text="Choose Product" />
+  <ListView fx:id="prodList" layoutX="200.0" layoutY="42.0" prefHeight="108.0" prefWidth="275.0" />
+  <Label layoutX="79.0" layoutY="183.0" text="Choose Quantity" />
+  <ComboBox fx:id="quantity" layoutX="200.0" layoutY="176.0" prefHeight="30.0" prefWidth="200.0" />
+  <Button fx:id="recordProduction" layoutX="249.0" layoutY="241.0" mnemonicParsing="false" onAction="#setRecordProduction" text="Record Production" />
 </AnchorPane>

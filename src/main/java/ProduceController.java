@@ -1,13 +1,19 @@
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import java.util.Date;
 
 import java.sql.*;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Controller for Produce fxml page.
@@ -102,6 +108,15 @@ public class ProduceController {
    */
   @FXML
   private void setRecordProduction(ActionEvent event) {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("ProductionLog.fxml"));
+    try {
+      Parent root = loader.load();
+    } catch (IOException iex) {
+      System.out.println("unable to load production log");
+    }
+
+    ProductionLogController productionLogController = loader.getController();
+
     final String JDBC_DRIVER = "org.h2.Driver";
     final String DB_URL = "jdbc:h2:./res/HR";
 
@@ -111,18 +126,27 @@ public class ProduceController {
     Connection conn;
     Statement stmt;
     Product currentProduct = prodList.getSelectionModel().getSelectedItem();
-    ProductionRecord prodRecord;
+    List<ProductionRecord> prodRecords = new ArrayList<>();
+    int numInsert = Integer.parseInt(quantity.getValue());
     switch (currentProduct.getType().getCode()) {
       case "AU":
-        prodRecord = new ProductionRecord(currentProduct, Product.getAudioCount());
+        for (int i = 0; i < numInsert; i++) {
+          Product.setAudioCount(Product.getAudioCount() + 1);
+          prodRecords.add(new ProductionRecord(currentProduct, Product.getAudioCount()));
+        }
         break;
 
       case "VI":
-        prodRecord = new ProductionRecord(currentProduct, Product.getVisualCount());
+        for (int i = 0; i < numInsert; i++) {
+          Product.setVisualCount(Product.getVisualCount() + 1);
+          prodRecords.add(new ProductionRecord(currentProduct, Product.getVisualCount()));
+        }
         break;
 
       default:
-        prodRecord = new ProductionRecord(0);
+        for (int i = 0; i < numInsert; i++) {
+          prodRecords.add(new ProductionRecord(0));
+        }
     }
 
     try {
@@ -135,20 +159,24 @@ public class ProduceController {
       //STEP 3: Execute a query
       stmt = conn.createStatement();
 
-      int prodId = prodRecord.getProductId();
-      String serialNum = prodRecord.getSerialNumber();
-      Date date = prodRecord.getDateProduced();
+      for (ProductionRecord prodRecord : prodRecords) {
+        int prodId = prodRecord.getProductId();
+        String serialNum = prodRecord.getSerialNumber();
+        Date date = prodRecord.getDateProduced();
 
-      // Insert value into table
-      String sql = "INSERT INTO ProductionRecord(product_id, serial_num, date_produced) VALUES (?,?,?)";
+        // Insert value into table
+        String sql = "INSERT INTO ProductionRecord(product_id, serial_num, date_produced) VALUES (?,?,?)";
 
-      PreparedStatement preparedStatement = conn.prepareStatement(sql);
-      preparedStatement.setInt(1, prodId);
-      preparedStatement.setString(2, serialNum);
-      preparedStatement.setObject(3, date);
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setInt(1, prodId);
+        preparedStatement.setString(2, serialNum);
+        preparedStatement.setObject(3, date);
 
-      preparedStatement.executeUpdate();
+        preparedStatement.executeUpdate();
+      }
+
       retrieveFromDb();
+      productionLogController.getText();
 
       // STEP 4: Clean-up environment
       stmt.close();
