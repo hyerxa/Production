@@ -42,6 +42,12 @@ public class ProduceController {
 
   ObservableList<Product> productLine = FXCollections.observableArrayList();
 
+  private Controller mainController;
+
+  public void injectMainController(Controller mainController) {
+    this.mainController = mainController;
+  }
+
   /**
    * Connect to database and insert and display values.
    */
@@ -225,11 +231,10 @@ public class ProduceController {
         preparedStatement.setObject(3, date);
 
         preparedStatement.executeUpdate();
-        productionLogController.setText(prodRecord.toString() + "\n");
+        mainController.setProductLog(prodRecord.toString() + "\n");
       }
 
       retrieveFromDb();
-
 
       // STEP 4: Clean-up environment
       stmt.close();

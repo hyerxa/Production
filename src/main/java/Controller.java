@@ -51,14 +51,26 @@ public class Controller implements Initializable {
   @FXML
   Tab productionLog;
 
+  @FXML
+  private ProductionLogController productionLogController;
+
+  @FXML
+  private ProduceController produceController;
+
+  @FXML
+  private ProductLineController productionLineController;
+
+  public void setProductLog(String record) {
+    productionLogController.setText(record);
+  }
+
   /**
    * Setup Tabs and connect them to fxml files.
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     testMultimedia();
-
-
+    produceController.injectMainController(this);
 
     try {
       AnchorPane anch1 = FXMLLoader.load(getClass().getResource("ProductLine.fxml"));
@@ -80,15 +92,6 @@ public class Controller implements Initializable {
     } catch (IOException iex) {
       System.out.println("unable to load production log");
     }
-
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("ProductionLog.fxml"));
-    try {
-      loader.load();
-    } catch (IOException iex) {
-      System.out.println("unable to load production log");
-    }
-    ProductionLogController productionLogController = loader.getController();
-    productionLogController.populateTextArea();
 
   }
 

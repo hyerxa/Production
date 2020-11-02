@@ -27,12 +27,7 @@ public class ProductionLogController {
         return txtProductionLog.getText();
     }
 
-    public void start() {
-        System.out.println("in start");
-        populateTextArea();
-    }
-
-    public void populateTextArea() {
+    public void initialize() {
         System.out.println("populate text area");
         final String JDBC_DRIVER = "org.h2.Driver";
         final String DB_URL = "jdbc:h2:./res/HR";
