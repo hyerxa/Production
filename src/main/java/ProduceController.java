@@ -37,6 +37,9 @@ public class ProduceController {
   @FXML
   private ListView<Product> prodList;
 
+  @FXML
+  private ProductionLogController productionLogController;
+
   ObservableList<Product> productLine = FXCollections.observableArrayList();
 
   /**
@@ -152,15 +155,18 @@ public class ProduceController {
    */
   @FXML
   private void setRecordProduction(ActionEvent event) {
+    /**
     FXMLLoader loader = new FXMLLoader(getClass().getResource("ProductionLog.fxml"));
     try {
       loader.load();
     } catch (IOException iex) {
       System.out.println("unable to load production log");
     }
+     **/
 
-    ProductionLogController productionLogController = loader.getController();
+    /****/
 
+    /****/
     final String JDBC_DRIVER = "org.h2.Driver";
     final String DB_URL = "jdbc:h2:./res/HR";
 
@@ -219,10 +225,11 @@ public class ProduceController {
         preparedStatement.setObject(3, date);
 
         preparedStatement.executeUpdate();
+        productionLogController.setText(prodRecord.toString() + "\n");
       }
 
       retrieveFromDb();
-      productionLogController.getText();
+
 
       // STEP 4: Clean-up environment
       stmt.close();
@@ -231,5 +238,7 @@ public class ProduceController {
       e.printStackTrace();
 
     }
+     /****/
+
   }
 }

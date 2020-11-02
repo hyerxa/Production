@@ -14,12 +14,26 @@ import java.util.ResourceBundle;
 public class ProductionLogController {
 
     @FXML
-    private TextArea productionLog;
+    private TextArea txtProductionLog;
 
     /**
      * Connect to database and display production log.
      */
-    public void getText() {
+    public void setText(String text) {
+        txtProductionLog.appendText(text);
+    }
+
+    public String getText() {
+        return txtProductionLog.getText();
+    }
+
+    public void start() {
+        System.out.println("in start");
+        populateTextArea();
+    }
+
+    public void populateTextArea() {
+        System.out.println("populate text area");
         final String JDBC_DRIVER = "org.h2.Driver";
         final String DB_URL = "jdbc:h2:./res/HR";
 
@@ -50,19 +64,14 @@ public class ProductionLogController {
                 textAreaOutput.append(productionRecord.toString() + "\n");
             }
 
-            productionLog.setText(textAreaOutput.toString());
+            txtProductionLog.setText(textAreaOutput.toString());
 
             // STEP 4: Clean-up environment
             stmt.close();
             conn.close();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-
         }
-    }
-
-    public void initialize() {
-        getText();
     }
 
 }

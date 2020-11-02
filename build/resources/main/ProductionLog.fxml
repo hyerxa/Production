@@ -10,5 +10,5 @@
     <URL value="@style.css" />
   </stylesheets>
 
-  <TextArea fx:id="productionLog" layoutX="56.0" layoutY="82.0" prefHeight="391.0" prefWidth="506.0" />
+  <TextArea fx:id="txtProductionLog" layoutX="56.0" layoutY="82.0" prefHeight="391.0" prefWidth="506.0" />
 </AnchorPane>
