@@ -97,6 +97,50 @@ public class ProduceController {
     quantity.getSelectionModel().selectFirst(); // default is first value (1)
     quantity.setEditable(true); // Allow user to enter custom values
 
+    final String JDBC_DRIVER = "org.h2.Driver";
+    final String DB_URL = "jdbc:h2:./res/HR";
+
+    //  Database credentials
+    final String USER = "";
+    final String PASS = "";
+    Connection conn;
+    Statement stmt;
+    List<String> serialNumbers = new ArrayList<>();
+
+    try {
+      // STEP 1: Register JDBC driver
+      Class.forName(JDBC_DRIVER);
+      //STEP 2: Open a connection
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      //STEP 3: Execute a query
+      stmt = conn.createStatement();
+
+      String sql = "SELECT serial_num FROM ProductionRecord";
+      ResultSet rs = stmt.executeQuery(sql);
+
+      while (rs.next()) {
+        serialNumbers.add(rs.getString(1));
+      }
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+
+    int countAudio = 0;
+    int countVideo = 0;
+    for (String serialNum : serialNumbers) {
+      switch (serialNum.substring(3,5)) {
+        case "AU":
+          countAudio++;
+          break;
+        case "VI":
+          countVideo++;
+          break;
+      }
+    }
+    Product.setAudioCount(countAudio);
+    Product.setVisualCount(countVideo);
+
     retrieveFromDb();
     for (Product product : productLine) {
       prodList.getItems().add(product);
@@ -110,7 +154,7 @@ public class ProduceController {
   private void setRecordProduction(ActionEvent event) {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("ProductionLog.fxml"));
     try {
-      Parent root = loader.load();
+      loader.load();
     } catch (IOException iex) {
       System.out.println("unable to load production log");
     }
@@ -125,8 +169,10 @@ public class ProduceController {
     final String PASS = "";
     Connection conn;
     Statement stmt;
+
     Product currentProduct = prodList.getSelectionModel().getSelectedItem();
     List<ProductionRecord> prodRecords = new ArrayList<>();
+
     int numInsert = Integer.parseInt(quantity.getValue());
     switch (currentProduct.getType().getCode()) {
       case "AU":
