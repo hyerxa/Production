@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ProductionRecord {
@@ -7,14 +8,6 @@ public class ProductionRecord {
     private String serialNumber;
     private Date dateProduced;
     private String productName;
-
-    ProductionRecord(int productId) {
-        this.productionNumber = 0;
-        this.productId = productId;
-        this.serialNumber = "0";
-        this.dateProduced = new Date();
-        this.productName = "N/A";
-    }
 
     ProductionRecord(int productionNumber, int productId, String serialNumber, Date dateProduced) {
         this.productionNumber = productionNumber;
@@ -33,9 +26,12 @@ public class ProductionRecord {
             }
         }
         this.productId = product.getId();
-        this.productionNumber = 0;
         this.dateProduced = new Date();
-        this.serialNumber = product.getManufacturer().substring(0,3) + product.getType().getCode() + countString.toString();
+        if (product.getManufacturer().length() < 3) {
+            this.serialNumber = product.getManufacturer() + product.getType().getCode() + countString.toString();
+        } else {
+            this.serialNumber = product.getManufacturer().substring(0,3) + product.getType().getCode() + countString.toString();
+        }
         this.productName = product.getName();
     }
 
@@ -71,7 +67,10 @@ public class ProductionRecord {
         this.dateProduced = dateProduced;
     }
 
+    String pattern = "yyyy-MM-dd";
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
     public String toString() {
-        return "Prod. Num: " + productionNumber + " Prod. Id: " + productId + " Serial Num: " + serialNumber + " Date: " + dateProduced;
+        return "Prod. Num: " + productionNumber + " Prod. Id: " + productId + " Serial Num: " + serialNumber + " Date: " + simpleDateFormat.format(dateProduced);
     }
 }

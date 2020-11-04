@@ -13,13 +13,22 @@
   </stylesheets>
 
   <TabPane styleClass='tabPane'>
-    <Tab styleClass='tab' fx:id="productLine" text="Product Line">
+    <Tab styleClass='tab'  text="Product Line">
+      <content>
+        <fx:include fx:id="productLine" source="ProductLine.fxml" />
+      </content>
     </Tab>
 
-    <Tab styleClass='tab' fx:id="produce" text="Produce">
+    <Tab styleClass='tab' text="Produce">
+      <content>
+        <fx:include fx:id="produce" source="Produce.fxml" />
+      </content>
     </Tab>
 
-    <Tab styleClass='tab' fx:id="productionLog" text="Production Log">
+    <Tab styleClass='tab' text="Production Log">
+      <content>
+        <fx:include fx:id="productionLog" source="ProductionLog.fxml" />
+      </content>
     </Tab>
 
   </TabPane>

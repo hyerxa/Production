@@ -72,6 +72,11 @@ public class ProductLineController {
   private TableColumn<?, ?> itemTypeCol;
 
   /**
+   * Main controller will be injected in to communicate with other controllers
+   */
+  private Controller mainController;
+
+  /**
    * Method to add new product when button is pressed.
    *
    * @param event the action of pressing the button.
@@ -81,7 +86,14 @@ public class ProductLineController {
     insertToDb();
   }
 
-  ObservableList<Product> productLine = FXCollections.observableArrayList();
+  ObservableList<Product> productLineList = FXCollections.observableArrayList();
+
+  /**
+   * Inject main controller for communication with other controllers.
+   */
+  public void injectMainController(Controller mainController) {
+    this.mainController = mainController;
+  }
 
   /**
    * Connect to database and insert and display values.
@@ -109,6 +121,18 @@ public class ProductLineController {
       String prodName = productName.getText();
       String man = manufacturer.getText();
       String type = itemType.getValue();
+
+      switch (type) {
+        case "AUDIO":
+          AudioPlayer tempAudio = new AudioPlayer(prodName, man);
+          mainController.addToListView(tempAudio);
+          break;
+
+        case "VIDEO":
+          MoviePlayer tempVideo = new MoviePlayer(prodName, man);
+          mainController.addToListView(tempVideo);
+          break;
+      }
 
       // Insert value into table
       String sql = "INSERT INTO Product(type, manufacturer, name) VALUES (?,?,?)";
@@ -158,14 +182,14 @@ public class ProductLineController {
       while (rs.next()) {
         switch (rs.getString(3)) {
           case "AUDIO":
-            productLine.add(new AudioPlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
+            productLineList.add(new AudioPlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
             break;
 
           case "VIDEO":
-            productLine.add(new MoviePlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
+            productLineList.add(new MoviePlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
             break;
         }
-        productTable.setItems(productLine);
+        productTable.setItems(productLineList);
       }
 
       // STEP 4: Clean-up environment

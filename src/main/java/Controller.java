@@ -35,22 +35,6 @@ public class Controller implements Initializable {
     }
   }
 
-  /**
-   * The productLine tab.
-   */
-  @FXML
-  Tab productLine;
-  /**
-   * The produce Tab.
-   */
-  @FXML
-  Tab produce;
-  /**
-   * The production Log Tab.
-   */
-  @FXML
-  Tab productionLog;
-
   @FXML
   private ProductionLogController productionLogController;
 
@@ -58,41 +42,32 @@ public class Controller implements Initializable {
   private ProduceController produceController;
 
   @FXML
-  private ProductLineController productionLineController;
+  private ProductLineController productLineController;
 
-  public void setProductLog(String record) {
-    productionLogController.setText(record);
+  /**
+   * Append new products to listview
+   * @param product new record to be added
+   */
+  public void addToListView(Product product) {
+    produceController.addLVItem(product);
   }
 
   /**
-   * Setup Tabs and connect them to fxml files.
+   * Append new records to product log
+   * @param record new record to be added
+   */
+  public void setProductLog(String record) {
+    productionLogController.setTAText(record);
+  }
+
+  /**
+   * Test multimedia and inject controller in produce controller
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     testMultimedia();
     produceController.injectMainController(this);
-
-    try {
-      AnchorPane anch1 = FXMLLoader.load(getClass().getResource("ProductLine.fxml"));
-      productLine.setContent(anch1);
-    } catch (IOException iex) {
-      System.out.println("unable to load production line");
-    }
-
-    try {
-      AnchorPane anch2 = FXMLLoader.load(getClass().getResource("Produce.fxml"));
-      produce.setContent(anch2);
-    } catch (IOException iex) {
-      System.out.println("unable to load produce");
-    }
-
-    try {
-      AnchorPane anch3 = FXMLLoader.load(getClass().getResource("ProductionLog.fxml"));
-      productionLog.setContent(anch3);
-    } catch (IOException iex) {
-      System.out.println("unable to load production log");
-    }
-
+    productLineController.injectMainController(this);
   }
 
 }
