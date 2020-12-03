@@ -25,6 +25,7 @@ If you would like to contribute, feel free to branch and clone the code, contrib
 ## Author
 Haley Yerxa
 ## License
+![Demo GIF](LICENSE)
 ## Acknowledgments
 * Professor Scott Vanselow
 * TAs Andrew Cavallaro, Vladimir Hardy, Robert Kissinger, Sean Lamont, Jeremy Martin
@@ -39,4 +40,13 @@ Developed in three sprints:
 2. Add object-oriented concepts and implementation.
 3. Complete Database integration and add finishing touches.
 ## Key Programming Concepts Utilized
+* Used the three pillars of object-oriented programming:
+  1. Inheritance: Program incorporates several levels of inheritance and implementation. For example, abstract class Product is extended into AudioPlayer and MoviePlayer classes
+  2. Polymorphism: Program implements several interfaces and methods in different ways in separate classes. For example, both AudioPlayer and MoviePlayer implement Multimedia Control differently.
+  3. Encapsulation: Modifying Accessors for fields of different classes allows for usage between classes. For example, the serial number of a product is set by accessing the most recent product and incrementing.
+* Recursive Methods were learned in this course, implemented as encryption for the password.
+* Basic Database querying and connection skills were used.
+* Enums, interfaces, and abstract classes were created and implemented.
+* Error handling and control structures such as switch case statements were implemented where necessary.
+* Controller dependency injection was implemented between controllers to ease the flow of data between tabs.
 
