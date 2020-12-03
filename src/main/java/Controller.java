@@ -142,6 +142,10 @@ public class Controller {
     productLineController.injectMainController(this);
   }
 
+  /*
+  * Following code was developed by consulting the following tutorial:
+  * https://www.w3schools.com/java/java_files_read.asp
+  */
   /**
    * Get text from a file.
    *
