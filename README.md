@@ -6,7 +6,7 @@ Was made in class as an assignment, but was taken as a challenge to further skil
 ## Demonstration
 ![Demo GIF](demo.gif)
 ## Documentation
-[JavaDoc](https://github.com/hyerxa/Production/blob/master/docs/package-summary.html)
+[JavaDoc](https://github.com/hyerxa/Production/docs/index.html)
 ## Diagrams
 ![Class Diagram](class_diagram.PNG)
 ![Database Diagram](database_diagram.PNG)
