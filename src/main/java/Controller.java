@@ -1,11 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import java.util.Scanner;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -148,8 +145,8 @@ public class Controller {
   /**
    * Get text from a file.
    *
-   * @param filename textfile path.
-   * @return String data in textfile.
+   * @param filename text file path.
+   * @return String data in text file.
    */
   public static String readFile(String filename) {
     try {

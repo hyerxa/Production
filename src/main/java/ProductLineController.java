@@ -1,3 +1,5 @@
+import static java.lang.Integer.parseInt;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -6,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -15,12 +16,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import static java.lang.Integer.parseInt;
-
 /**
- * Controller for Product Line fxml page. Connects to database to insert new products and display
- * current products. Haley Yerxa
+ * Controller for Product Line fxml page.
+ * Connects to database to insert new products and display
+ * current products.
+ *
+ * @author Haley Yerxa
  */
+
 public class ProductLineController {
 
   /**
@@ -28,79 +31,83 @@ public class ProductLineController {
    */
   @FXML
   Button addProduct;
-
   /**
    * Text field for user input of new product name.
    */
   @FXML
   private TextField productName;
-
   /**
    * Choice Box for type of new item.
    */
   @FXML
   private ChoiceBox<String> itemType;
-
   /**
    * Text field for user input of manufacturer.
    */
   @FXML
   private TextField manufacturer;
-
+  /**
+   * Text field for user input of supported audio formats.
+   */
   @FXML
   private TextField supportedAudioFormats;
-
+  /**
+   * Text field for user input of supported playlist formats.
+   */
   @FXML
   private TextField supportedPlaylistFormats;
-
+  /**
+   * Text field for user input of screen resolution.
+   */
   @FXML
   private TextField screenResolution;
-
+  /**
+   * Text field for user input of screen refresh rate.
+   */
   @FXML
   private TextField screenRefreshRate;
-
+  /**
+   * Text field for user input of screen response time.
+   */
   @FXML
   private TextField screenResponseTime;
-
+  /**
+   * ChoiceBox for user input of monitor type.
+   */
   @FXML
   private ChoiceBox<String> monitorType;
-
   /**
    * Table to display products.
    */
   @FXML
   private TableView<Product> productTable;
-
   /**
    * Column in table for productName.
    */
   @FXML
   private TableColumn<?, ?> productNameCol;
-
   /**
    * Column in table for manufacturer.
    */
   @FXML
   private TableColumn<?, ?> manufacturerCol;
-
   /**
    * Column in table for item type.
    */
   @FXML
   private TableColumn<?, ?> itemTypeCol;
-
   /**
-   * Main controller will be injected in to communicate with other controllers
+   * Main controller will be injected in to communicate with other controllers.
    */
   private Controller mainController;
 
   /**
    * Method to add new product when button is pressed.
-   *
-   * @param event the action of pressing the button.
+   * Clears all textFields to reset and allow for new
+   * info to be entered.
    */
   @FXML
-  private void addProduct(ActionEvent event) {
+  private void addProduct() {
     insertToDb();
     productName.clear();
     manufacturer.clear();
@@ -136,22 +143,28 @@ public class ProductLineController {
       //STEP 3: Execute a query
       stmt = conn.createStatement();
 
+      // Get important data from fields
       String prodName = productName.getText();
       String man = manufacturer.getText();
       String type = itemType.getValue();
 
+      // If any of the fields are not filled, display error message and exit function.
       if (prodName.isEmpty() || man.isEmpty() || type == null) {
         System.out.println("Insufficient info to add product");
         return;
       }
 
+      // Flag to see if any optional fields are empty
       boolean errorInput = false;
 
       switch (type) {
+        // For audio and audiomobile, check optional audio fields
         case "AUDIO":
         case "AUDIOMOBILE":
+          // Will be empty strings if not filled, won't cause error
           String supportedAudio = supportedAudioFormats.getText();
           String supportedPlaylist = supportedPlaylistFormats.getText();
+          // Add new Product to listview
           if (type.equals("AUDIO")) {
             AudioPlayer tempAudio = new AudioPlayer(prodName, man, ItemType.AUDIO, supportedAudio,
                 supportedPlaylist);
@@ -162,28 +175,31 @@ public class ProductLineController {
             mainController.addToListView(tempAudioMobile);
           }
           break;
+
+        // Check to see if visual fields are filled out.
         case "VIDEO":
         case "VISUALMOBILE":
           String screenRes = screenResolution.getText();
           int screenRef = 0;
           int screenResT = 0;
+          // Fields should be integers
           try {
             screenRef = parseInt(screenRefreshRate.getText());
           } catch (Exception e) {
             System.out.println("Please enter a valid integer for screen refresh rate");
             errorInput = true;
           }
-
           try {
             screenResT = parseInt(screenResponseTime.getText());
           } catch (Exception e) {
             System.out.println("Please enter a valid integer for screen response time");
             errorInput = true;
           }
-
+          // Create new screen object
           Screen screen = new Screen(screenRes, screenRef, screenResT);
           String monStringType = monitorType.getValue();
           MonitorType monType = MonitorType.LED;
+          // If a monitor type is selected, set the temp value.
           if (monStringType != null) {
             switch (monStringType) {
               case "LCD":
@@ -192,8 +208,14 @@ public class ProductLineController {
               case "LED":
                 monType = MonitorType.LED;
                 break;
+              default:
+                break;
             }
+          } else {
+            errorInput = true;
           }
+
+          // If optional fields were all filled out, create object with detailed constructor
           if (!errorInput) {
             if (type.equals("VIDEO")) {
               MoviePlayer tempVideo = new MoviePlayer(prodName, man, ItemType.VISUAL, screen,
@@ -204,7 +226,7 @@ public class ProductLineController {
                   screen, monType);
               mainController.addToListView(tempVisualMobile);
             }
-          } else {
+          } else { // Otherwise just create with basic info.
             if (type.equals("VIDEO")) {
               MoviePlayer tempVideo = new MoviePlayer(prodName, man, ItemType.VISUAL);
               mainController.addToListView(tempVideo);
@@ -239,7 +261,11 @@ public class ProductLineController {
     }
   }
 
+  /**
+   * Retrieve all values from Database to set product list.
+   */
   public void retrieveFromDb() {
+    // Observable List for products
     ObservableList<Product> productLineList = FXCollections.observableArrayList();
 
     Connection conn;
@@ -261,9 +287,11 @@ public class ProductLineController {
       ResultSet rs = stmt.executeQuery(sql2);
 
       while (rs.next()) {
+        // Call function from other controller, add all contents to list.
         ProduceController.addToList(rs, productLineList);
-        productTable.setItems(productLineList);
       }
+      // Set items in table
+      productTable.setItems(productLineList);
 
       // STEP 4: Clean-up environment
       stmt.close();
@@ -274,6 +302,10 @@ public class ProductLineController {
     }
   }
 
+  /**
+   * Set up the product line table with labels.
+   */
+  // Suppress warnings because this type will always work.
   @SuppressWarnings("unchecked")
   public void setUpProductLineTable() {
     productNameCol.setCellValueFactory(new PropertyValueFactory("Name"));
@@ -282,11 +314,13 @@ public class ProductLineController {
 
   }
 
+  /**
+   * Initialize by setting up table and setting first value in choice boxes.
+   */
   public void initialize() {
     setUpProductLineTable();
     retrieveFromDb();
     itemType.getSelectionModel().selectFirst();
     monitorType.getSelectionModel().selectFirst();
   }
-
 }

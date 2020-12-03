@@ -29,6 +29,14 @@ public class ProductionRecord {
    * Name of the product.
    */
   private String productName;
+  /**
+   * Pattern for date format.
+   */
+  final String pattern = "yyyy-MM-dd";
+  /**
+   * Date format to be used in toString method.
+   */
+  final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
   /**
    * Constructor that takes all fields as parameters except name.
@@ -78,49 +86,107 @@ public class ProductionRecord {
     this.productName = product.getName();
   }
 
+  /**
+   * Getter for production number field.
+   * Defined despite warnings for easy usage in future code
+   *
+   * @return production number.
+   */
   public int getProductionNumber() {
     return productionNumber;
   }
 
+  /**
+   * Setter for production number field.
+   *
+   * @param productionNumber number of this production.
+   */
   public void setProductionNumber(int productionNumber) {
     this.productionNumber = productionNumber;
   }
 
+  /**
+   * Getter for product id field.
+   *
+   * @return production id.
+   */
   public int getProductId() {
     return productId;
   }
 
+  /**
+   * Setter for product id field.
+   * Defined despite warnings for easy usage in future code
+   *
+   * @param productId id associated with product.
+   */
   public void setProductId(int productId) {
     this.productId = productId;
   }
 
+  /**
+   * Getter for serial number field.
+   *
+   * @return serial number.
+   */
   public String getSerialNumber() {
     return serialNumber;
   }
 
+  /**
+   * Setter for serial number field.
+   * Defined despite warnings for easy usage in future code
+   *
+   * @param serialNumber unique serial number of product.
+   */
   public void setSerialNumber(String serialNumber) {
     this.serialNumber = serialNumber;
   }
 
+  /**
+   * Getter for date produced field.
+   *
+   * @return date produced.
+   */
   public Date getDateProduced() {
     return dateProduced;
   }
 
+  /**
+   * Setter for date produced field.
+   * Defined despite warnings for easy usage in future code
+   *
+   * @param dateProduced date that production was recorded.
+   */
   public void setDateProduced(Date dateProduced) {
     this.dateProduced = dateProduced;
   }
 
+  /**
+   * Getter for product name field.
+   * Defined despite warnings for easy usage in future code
+   *
+   * @return product name.
+   */
   public String getProductName() {
     return productName;
   }
 
+  /**
+   * Setter for product name field.
+   * Defined despite warnings for easy usage in future code
+   *
+   * @param productName name of product.
+   */
   public void setProductName(String productName) {
     this.productName = productName;
   }
 
-  final String pattern = "yyyy-MM-dd";
-  final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-
+  /**
+   * Override toString method to contain fields and labels.
+   *
+   * @return String with Production Record details.
+   */
   public String toString() {
     return "Prod. Num: " + productionNumber + " Prod. Id: " + productId + " Serial Num: "
         + serialNumber + " Date: " + simpleDateFormat.format(dateProduced);
