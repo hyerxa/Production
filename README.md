@@ -6,7 +6,7 @@ Was made in class as an assignment, but was taken as a challenge to further skil
 ## Demonstration
 ![Demo GIF](demo.gif)
 ## Documentation
-[JavaDoc](file:///C:/Users/haley/Documents/Production/docs/package-summary.html)
+[JavaDoc](https://github.com/hyerxa/Production/blob/master/docs/package-summary.html)
 ## Diagrams
 ![Class Diagram](class_diagram.PNG)
 ![Database Diagram](database_diagram.PNG)
@@ -19,13 +19,12 @@ Uses JavaFX, for development purposes I recommend downloading and using SceneBui
 * JavaFx and SceneBuilder
 * Gradle
 * H2 Database
-*
 ## Contributing
 If you would like to contribute, feel free to branch and clone the code, contributions are always welcome!
 ## Author
 Haley Yerxa
 ## License
-![Demo GIF](LICENSE)
+[License](LICENSE)
 ## Acknowledgments
 * Professor Scott Vanselow
 * TAs Andrew Cavallaro, Vladimir Hardy, Robert Kissinger, Sean Lamont, Jeremy Martin
