@@ -14,6 +14,7 @@ Was made in class as an assignment, but was taken as a challenge to further skil
 This project is built using Gradle on Intellij Idea, so for optimal performance, I recommend cloning work into Intellij Idea. 
 Requires Java, currently configured for SDK 11. Gradle build file is included, so minimum configuration is required. 
 Uses JavaFX, for development purposes I recommend downloading and using SceneBuilder.
+To run the executable, go to bin/lib and run the jar file from Intellij, or the batch file which executes the proper command.
 ## Built With
 * Intellij Idea Ultimate
 * JavaFx and SceneBuilder
