@@ -18,9 +18,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import static java.lang.Integer.parseInt;
 
 /**
- * Controller for Product Line fxml page.
- * Connects to database to insert new products and display current products.
- * Haley Yerxa
+ * Controller for Product Line fxml page. Connects to database to insert new products and display
+ * current products. Haley Yerxa
  */
 public class ProductLineController {
 
@@ -112,8 +111,6 @@ public class ProductLineController {
     screenResponseTime.clear();
   }
 
-  ObservableList<Product> productLineList = FXCollections.observableArrayList();
-
   /**
    * Inject main controller for communication with other controllers.
    */
@@ -125,21 +122,16 @@ public class ProductLineController {
    * Connect to database and insert and display values.
    */
   public void insertToDb() {
-    final String JDBC_DRIVER = "org.h2.Driver";
-    final String DB_URL = "jdbc:h2:./res/HR";
 
-    //  Database credentials
-    final String USER = "";
-    final String PASS = "";
     Connection conn;
     Statement stmt;
 
     try {
       // STEP 1: Register JDBC driver
-      Class.forName(JDBC_DRIVER);
+      Class.forName(Controller.JDBC_DRIVER);
 
       //STEP 2: Open a connection
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      conn = DriverManager.getConnection(Controller.DB_URL, Controller.USER, Controller.PASS);
 
       //STEP 3: Execute a query
       stmt = conn.createStatement();
@@ -149,6 +141,7 @@ public class ProductLineController {
       String type = itemType.getValue();
 
       if (prodName.isEmpty() || man.isEmpty() || type == null) {
+        System.out.println("Insufficient info to add product");
         return;
       }
 
@@ -160,10 +153,12 @@ public class ProductLineController {
           String supportedAudio = supportedAudioFormats.getText();
           String supportedPlaylist = supportedPlaylistFormats.getText();
           if (type.equals("AUDIO")) {
-            AudioPlayer tempAudio = new AudioPlayer(prodName, man, ItemType.AUDIO, supportedAudio, supportedPlaylist);
+            AudioPlayer tempAudio = new AudioPlayer(prodName, man, ItemType.AUDIO, supportedAudio,
+                supportedPlaylist);
             mainController.addToListView(tempAudio);
           } else {
-            AudioPlayer tempAudioMobile = new AudioPlayer(prodName, man, ItemType.AUDIOMOBILE, supportedAudio, supportedPlaylist);
+            AudioPlayer tempAudioMobile = new AudioPlayer(prodName, man, ItemType.AUDIOMOBILE,
+                supportedAudio, supportedPlaylist);
             mainController.addToListView(tempAudioMobile);
           }
           break;
@@ -189,42 +184,55 @@ public class ProductLineController {
           Screen screen = new Screen(screenRes, screenRef, screenResT);
           String monStringType = monitorType.getValue();
           MonitorType monType = MonitorType.LED;
-          switch (monStringType) {
-            case "LCD":
-              monType = MonitorType.LCD;
-              break;
-            case "LED":
-              monType = MonitorType.LED;
-              break;
+          if (monStringType != null) {
+            switch (monStringType) {
+              case "LCD":
+                monType = MonitorType.LCD;
+                break;
+              case "LED":
+                monType = MonitorType.LED;
+                break;
+            }
           }
           if (!errorInput) {
             if (type.equals("VIDEO")) {
-              MoviePlayer tempVideo = new MoviePlayer(prodName, man, ItemType.VISUAL, screen, monType);
+              MoviePlayer tempVideo = new MoviePlayer(prodName, man, ItemType.VISUAL, screen,
+                  monType);
               mainController.addToListView(tempVideo);
             } else {
-              MoviePlayer tempVisualMobile = new MoviePlayer(prodName, man, ItemType.VISUALMOBILE, screen, monType);
+              MoviePlayer tempVisualMobile = new MoviePlayer(prodName, man, ItemType.VISUALMOBILE,
+                  screen, monType);
+              mainController.addToListView(tempVisualMobile);
+            }
+          } else {
+            if (type.equals("VIDEO")) {
+              MoviePlayer tempVideo = new MoviePlayer(prodName, man, ItemType.VISUAL);
+              mainController.addToListView(tempVideo);
+            } else {
+              MoviePlayer tempVisualMobile = new MoviePlayer(prodName, man, ItemType.VISUALMOBILE);
               mainController.addToListView(tempVisualMobile);
             }
           }
           break;
+        default:
+          System.out.println("Invalid type");
       }
 
-      if (!errorInput) {
-        // Insert value into table
-        String sql = "INSERT INTO Product(type, manufacturer, name) VALUES (?,?,?)";
+      // Insert value into table
+      String sql = "INSERT INTO Product(type, manufacturer, name) VALUES (?,?,?)";
 
-        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setString(1, type);
-        preparedStatement.setString(2, man);
-        preparedStatement.setString(3, prodName);
+      PreparedStatement preparedStatement = conn.prepareStatement(sql);
+      preparedStatement.setString(1, type);
+      preparedStatement.setString(2, man);
+      preparedStatement.setString(3, prodName);
 
-        preparedStatement.executeUpdate();
-        retrieveFromDb();
+      preparedStatement.executeUpdate();
+      retrieveFromDb();
 
-        // STEP 4: Clean-up environment
-        stmt.close();
-        conn.close();
-      }
+      // STEP 4: Clean-up environment
+      stmt.close();
+      conn.close();
+
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
 
@@ -232,21 +240,17 @@ public class ProductLineController {
   }
 
   public void retrieveFromDb() {
-    final String JDBC_DRIVER = "org.h2.Driver";
-    final String DB_URL = "jdbc:h2:./res/HR";
+    ObservableList<Product> productLineList = FXCollections.observableArrayList();
 
-    //  Database credentials
-    final String USER = "";
-    final String PASS = "";
     Connection conn;
     Statement stmt;
 
     try {
       // STEP 1: Register JDBC driver
-      Class.forName(JDBC_DRIVER);
+      Class.forName(Controller.JDBC_DRIVER);
 
       //STEP 2: Open a connection
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      conn = DriverManager.getConnection(Controller.DB_URL, Controller.USER, Controller.PASS);
 
       //STEP 3: Execute a query
       stmt = conn.createStatement();
@@ -256,19 +260,21 @@ public class ProductLineController {
 
       ResultSet rs = stmt.executeQuery(sql2);
 
-      ProduceController.addToList(rs, productLineList);
-      productTable.setItems(productLineList);
+      while (rs.next()) {
+        ProduceController.addToList(rs, productLineList);
+        productTable.setItems(productLineList);
+      }
 
       // STEP 4: Clean-up environment
       stmt.close();
       conn.close();
-    }
-    catch (ClassNotFoundException | SQLException e) {
+    } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
 
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void setUpProductLineTable() {
     productNameCol.setCellValueFactory(new PropertyValueFactory("Name"));
     manufacturerCol.setCellValueFactory(new PropertyValueFactory("Manufacturer"));
@@ -279,6 +285,8 @@ public class ProductLineController {
   public void initialize() {
     setUpProductLineTable();
     retrieveFromDb();
+    itemType.getSelectionModel().selectFirst();
+    monitorType.getSelectionModel().selectFirst();
   }
 
 }

@@ -1,27 +1,29 @@
-public class Screen implements ScreenSpec{
-    String resolution;
-    int refreshRate;
-    int responseTime;
+public class Screen implements ScreenSpec {
 
-    Screen(String resolution, int refreshRate, int responseTime) {
-        this.resolution = resolution;
-        this.refreshRate = refreshRate;
-        this.responseTime = responseTime;
-    }
+  final String resolution;
+  final int refreshRate;
+  final int responseTime;
 
-    public String getResolution() {
-        return resolution;
-    }
+  Screen(String resolution, int refreshRate, int responseTime) {
+    this.resolution = resolution;
+    this.refreshRate = refreshRate;
+    this.responseTime = responseTime;
+  }
 
-    public int getRefreshRate() {
-        return refreshRate;
-    }
+  public String getResolution() {
+    return resolution;
+  }
 
-    public int getResponseTime() {
-        return responseTime;
-    }
+  public int getRefreshRate() {
+    return refreshRate;
+  }
 
-    public String toString() {
-        return "Screen:\n" + "Resolution: " + resolution + "\n" + "Refresh rate: " + refreshRate + "\n" + "Response time: " + responseTime;
-    }
+  public int getResponseTime() {
+    return responseTime;
+  }
+
+  public String toString() {
+    return "Screen:\n" + "Resolution: " + resolution + "\n" + "Refresh rate: " + refreshRate + "\n"
+        + "Response time: " + responseTime;
+  }
 }

@@ -1,9 +1,9 @@
 .tab {
-    -fx-padding: 10px;
-    -fx-font-size: 14px;
-    -fx-background-color: LightBlue;
+  -fx-padding: 10px;
+  -fx-font-size: 14px;
+  -fx-background-color: LightBlue;
 }
 
 .tabPane {
-    -fx-background-color: LightCyan;
+  -fx-background-color: LightCyan;
 }

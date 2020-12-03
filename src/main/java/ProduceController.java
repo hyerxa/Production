@@ -1,54 +1,56 @@
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
-import java.util.Date;
-
-import java.sql.*;
-import javafx.scene.layout.AnchorPane;
 
 /**
- * Controller for Produce fxml page.
- * Sets up combobox and button reaction for produce tab.
- * Haley Yerxa
+ * Controller for Produce fxml page. Sets up combobox and button reaction for produce tab.
+ *
+ * @author Haley Yerxa
  */
 public class ProduceController {
 
   /**
    * Button to record production.
    */
-  @FXML Button recordProduction;
+  @FXML
+  Button recordProduction;
 
   /**
    * Combobox with quantity options.
    */
-  @FXML private ComboBox<String> quantity;
+  @FXML
+  private ComboBox<String> quantity;
 
   /**
    * ListView with Product options.
    */
-  @FXML private ListView<Product> prodList;
+  @FXML
+  private ListView<Product> prodList;
 
   /**
-   * ObservableList to hold all product options
+   * ObservableList to hold all product options.
    */
-  ObservableList<Product> productList = FXCollections.observableArrayList();
+  final ObservableList<Product> productList = FXCollections.observableArrayList();
 
   /**
-   * Main controller will be injected in to communicate with other controllers
+   * Main controller will be injected in to communicate with other controllers.
    */
   private Controller mainController;
 
   /**
-   * Stores highest production number
+   * Stores highest production number.
    */
   private int highestProdNum = 0;
 
@@ -60,55 +62,64 @@ public class ProduceController {
   }
 
   /**
-   * Adds new product to list view
-   * @param product product to be added to listview
+   * Adds new product to list view.
+   *
+   * @param product product to be added to listview.
    */
-  public void addLVItem(Product product) {
+  public void addLvItem(Product product) {
     prodList.getItems().add(product);
   }
 
+  /**
+   * Given result set, adds new product to list.
+   *
+   * @param rs result set to be evaluated.
+   * @param list Observable list to be added to.
+   */
   public static void addToList(ResultSet rs, ObservableList<Product> list) {
     try {
-      while (rs.next()) {
-        /**
-         * Add specific product type to list
-         */
-        switch (rs.getString(3)) {
-          case "AUDIO":
-          case "AUDIOMOBILE":
-            list.add(new AudioPlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
-            break;
-
-          case "VIDEO":
-          case "VISUALMOBILE":
-            list.add(new MoviePlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
-            break;
-        }
+      /*
+        Add specific product type to list
+      */
+      switch (rs.getString(3)) {
+        case "AUDIO":
+          list.add(new AudioPlayer(rs.getString(1), rs.getString(2), ItemType.AUDIO, rs.getInt(4)));
+          break;
+        case "AUDIOMOBILE":
+          list.add(new AudioPlayer(rs.getString(1), rs.getString(2), ItemType.AUDIOMOBILE,
+              rs.getInt(4)));
+          break;
+        case "VIDEO":
+          list.add(
+              new MoviePlayer(rs.getString(1), rs.getString(2), rs.getInt(4), ItemType.VISUAL));
+          break;
+        case "VISUALMOBILE":
+          list.add(new MoviePlayer(rs.getString(1), rs.getString(2), rs.getInt(4),
+              ItemType.VISUALMOBILE));
+          break;
+        default:
+          System.out.println("Invalid Type");
       }
     } catch (SQLException e) {
+      System.out.println("Could not connect to database");
       e.printStackTrace();
     }
   }
 
   /**
-   * Retrieve all products from database
+   * Retrieve all products from database.
    */
   public void retrieveFromDb() {
-    final String JDBC_DRIVER = "org.h2.Driver";
-    final String DB_URL = "jdbc:h2:./res/HR";
 
-    //  Database credentials
-    final String USER = "";
-    final String PASS = "";
     Connection conn;
     Statement stmt;
 
     try {
       // STEP 1: Register JDBC driver
-      Class.forName(JDBC_DRIVER);
+      Class.forName(Controller.JDBC_DRIVER);
 
       //STEP 2: Open a connection
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      conn = DriverManager.getConnection(Controller.DB_URL, Controller.USER, Controller.PASS);
 
       //STEP 3: Execute a query
       stmt = conn.createStatement();
@@ -118,19 +129,20 @@ public class ProduceController {
 
       ResultSet rs = stmt.executeQuery(sql2);
 
-      addToList(rs, productList);
+      while (rs.next()) {
+        addToList(rs, productList);
+      }
 
       // STEP 4: Clean-up environment
       stmt.close();
       conn.close();
-    }
-    catch (ClassNotFoundException | SQLException e) {
+    } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
   }
 
   /**
-   * Populate Combobox and Listview
+   * Populate Combobox and Listview.
    */
   public void initialize() {
 
@@ -141,29 +153,23 @@ public class ProduceController {
     quantity.getSelectionModel().selectFirst(); // default is first value (1)
     quantity.setEditable(true); // Allow user to enter custom values
 
-    final String JDBC_DRIVER = "org.h2.Driver";
-    final String DB_URL = "jdbc:h2:./res/HR";
-
-    //  Database credentials
-    final String USER = "";
-    final String PASS = "";
     Connection conn;
     Statement stmt;
 
-    /**
-     * Create List to store serial numbers so they can be incremented
+    /*
+      Create List to store serial numbers so they can be incremented
      */
     List<String> serialNumbers = new ArrayList<>();
-    /**
-     * Stores production numbers to set new records with correct production number
+    /*
+      Stores production numbers to set new records with correct production number
      */
     List<Integer> productionNumbers = new ArrayList<>();
 
     try {
       // STEP 1: Register JDBC driver
-      Class.forName(JDBC_DRIVER);
+      Class.forName(Controller.JDBC_DRIVER);
       //STEP 2: Open a connection
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      conn = DriverManager.getConnection(Controller.DB_URL, Controller.USER, Controller.PASS);
       //STEP 3: Execute a query
       stmt = conn.createStatement();
 
@@ -177,11 +183,12 @@ public class ProduceController {
       }
 
     } catch (ClassNotFoundException | SQLException e) {
+      System.out.println("Could not connect to database");
       e.printStackTrace();
     }
 
-    /**
-     * Sets highest production number
+    /*
+      Sets highest production number
      */
     for (int prodNum : productionNumbers) {
       if (highestProdNum < prodNum) {
@@ -189,20 +196,20 @@ public class ProduceController {
       }
     }
 
-    /**
-     * Stores number of audio products in database
+    /*
+      Stores number of audio products in database
      */
     int countAudio = 0;
-    /**
-     * Stores number of video products in database
+    /*
+      Stores number of video products in database
      */
     int countVideo = 0;
 
-    /**
-     * Go through serial numbers and increment each count
+    /*
+      Go through serial numbers and increment each count
      */
     for (String serialNum : serialNumbers) {
-      switch (serialNum.substring(3,5)) {
+      switch (serialNum.substring(3, 5)) {
         case "AU":
         case "AM":
           countAudio++;
@@ -211,10 +218,12 @@ public class ProduceController {
         case "VM":
           countVideo++;
           break;
+        default:
+          System.out.println("Invalid code");
       }
     }
-    /**
-     * Set the starting counts to the correct value so new entries can autoincrement
+    /*
+      Set the starting counts to the correct value so new entries can autoincrement
      */
     Product.setAudioCount(countAudio);
     Product.setVisualCount(countVideo);
@@ -232,54 +241,61 @@ public class ProduceController {
    * Add record to database when record button is pressed.
    */
   @FXML
-  private void setRecordProduction(ActionEvent event) {
+  private void setRecordProduction() {
 
-    final String JDBC_DRIVER = "org.h2.Driver";
-    final String DB_URL = "jdbc:h2:./res/HR";
-
-    //  Database credentials
-    final String USER = "";
-    final String PASS = "";
     Connection conn;
     Statement stmt;
 
-    /**
-     * Product object to hold selected item
+    /*
+      Product object to hold selected item
      */
     Product currentProduct = prodList.getSelectionModel().getSelectedItem();
-    if (currentProduct == null) {return;}
+    if (currentProduct == null) {
+      return;
+    }
 
-    /**
-     * List to hold all current production records
+    /*
+      List to hold all current production records
      */
     List<ProductionRecord> prodRecords = new ArrayList<>();
 
-    /**
-     * Number of records the user wishes to submit.
+    /*
+      Number of records the user wishes to submit.
      */
-    int numInsert = Integer.parseInt(quantity.getValue());
+    int numInsert;
+    try {
+      numInsert = Integer.parseInt(quantity.getValue());
+    } catch (Exception e) {
+      System.out.println("Invalid numeric input");
+      return;
+    }
 
-    /**
-     * Add new record(s) to list and increment for serial number
+
+    /*
+      Add new record(s) to list and increment for serial number
      */
     switch (currentProduct.getType().getCode()) {
       case "AU":
+      case "AM":
         for (int i = 0; i < numInsert; i++) {
           // pre-increment count
           Product.setAudioCount(Product.getAudioCount() + 1);
           highestProdNum++;
           // add record
-          ProductionRecord tempAudioRecord = new ProductionRecord(currentProduct, Product.getAudioCount());
+          ProductionRecord tempAudioRecord = new ProductionRecord(currentProduct,
+              Product.getAudioCount());
           tempAudioRecord.setProductionNumber(highestProdNum);
           prodRecords.add(tempAudioRecord);
         }
         break;
 
       case "VI":
+      case "VM":
         for (int i = 0; i < numInsert; i++) {
           Product.setVisualCount(Product.getVisualCount() + 1);
           highestProdNum++;
-          ProductionRecord tempVideoRecord = new ProductionRecord(currentProduct, Product.getVisualCount());
+          ProductionRecord tempVideoRecord = new ProductionRecord(currentProduct,
+              Product.getVisualCount());
           tempVideoRecord.setProductionNumber(highestProdNum);
           prodRecords.add(tempVideoRecord);
         }
@@ -289,29 +305,30 @@ public class ProduceController {
         System.out.println("Invalid code");
     }
 
-    /**
-     * Insert new records into database
+    /*
+      Insert new records into database
      */
     try {
       // STEP 1: Register JDBC driver
-      Class.forName(JDBC_DRIVER);
+      Class.forName(Controller.JDBC_DRIVER);
 
       //STEP 2: Open a connection
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      conn = DriverManager.getConnection(Controller.DB_URL, Controller.USER, Controller.PASS);
 
       //STEP 3: Execute a query
       stmt = conn.createStatement();
 
       for (ProductionRecord prodRecord : prodRecords) {
-        /**
-         * Setup query fields
+        /*
+          Setup query fields
          */
         int prodId = prodRecord.getProductId();
         String serialNum = prodRecord.getSerialNumber();
         Date date = prodRecord.getDateProduced();
 
         // Insert value into table
-        String sql = "INSERT INTO ProductionRecord(product_id, serial_num, date_produced) VALUES (?,?,?)";
+        String sql =
+            "INSERT INTO ProductionRecord(product_id, serial_num, date_produced) VALUES (?,?,?)";
 
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setInt(1, prodId);
@@ -331,7 +348,6 @@ public class ProduceController {
       conn.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
-
     }
 
   }

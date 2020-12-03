@@ -7,7 +7,8 @@ import javafx.stage.Stage;
 /**
  * Main class for production project.
  * Starts Javafx application.
- * Haley Yerxa
+ *
+ * @author Haley Yerxa
  */
 
 public class Main extends Application {
@@ -24,12 +25,9 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-
     Scene scene = new Scene(root);
-
     primaryStage.setTitle("Haley Yerxa Production");
     primaryStage.setScene(scene);
     primaryStage.show();
-
   }
 }
