@@ -40,7 +40,7 @@ public class ProduceController {
   /**
    * ObservableList to hold all product options
    */
-  ObservableList<Product> productLineList = FXCollections.observableArrayList();
+  ObservableList<Product> productList = FXCollections.observableArrayList();
 
   /**
    * Main controller will be injected in to communicate with other controllers
@@ -65,6 +65,29 @@ public class ProduceController {
    */
   public void addLVItem(Product product) {
     prodList.getItems().add(product);
+  }
+
+  public static void addToList(ResultSet rs, ObservableList<Product> list) {
+    try {
+      while (rs.next()) {
+        /**
+         * Add specific product type to list
+         */
+        switch (rs.getString(3)) {
+          case "AUDIO":
+          case "AUDIOMOBILE":
+            list.add(new AudioPlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
+            break;
+
+          case "VIDEO":
+          case "VISUALMOBILE":
+            list.add(new MoviePlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
+            break;
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -95,20 +118,7 @@ public class ProduceController {
 
       ResultSet rs = stmt.executeQuery(sql2);
 
-      while (rs.next()) {
-        /**
-         * Add specific product type to list
-         */
-        switch (rs.getString(3)) {
-          case "AUDIO":
-            productLineList.add(new AudioPlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
-            break;
-
-          case "VIDEO":
-            productLineList.add(new MoviePlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
-            break;
-        }
-      }
+      addToList(rs, productList);
 
       // STEP 4: Clean-up environment
       stmt.close();
@@ -116,7 +126,6 @@ public class ProduceController {
     }
     catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
-
     }
   }
 
@@ -195,9 +204,11 @@ public class ProduceController {
     for (String serialNum : serialNumbers) {
       switch (serialNum.substring(3,5)) {
         case "AU":
+        case "AM":
           countAudio++;
           break;
         case "VI":
+        case "VM":
           countVideo++;
           break;
       }
@@ -212,7 +223,7 @@ public class ProduceController {
     retrieveFromDb();
 
     // Add all entries to the listview
-    for (Product product : productLineList) {
+    for (Product product : productList) {
       prodList.getItems().add(product);
     }
   }
@@ -236,6 +247,7 @@ public class ProduceController {
      * Product object to hold selected item
      */
     Product currentProduct = prodList.getSelectionModel().getSelectedItem();
+    if (currentProduct == null) {return;}
 
     /**
      * List to hold all current production records
@@ -321,7 +333,6 @@ public class ProduceController {
       e.printStackTrace();
 
     }
-     /****/
 
   }
 }

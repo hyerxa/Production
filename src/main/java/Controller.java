@@ -31,7 +31,6 @@ public class Controller implements Initializable {
       p.stop();
       p.next();
       p.previous();
-
     }
   }
 
@@ -43,6 +42,9 @@ public class Controller implements Initializable {
 
   @FXML
   private ProductLineController productLineController;
+
+  @FXML
+  private EmployeeController employeeController;
 
   /**
    * Append new products to listview

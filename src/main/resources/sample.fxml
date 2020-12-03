@@ -31,5 +31,11 @@
       </content>
     </Tab>
 
+    <Tab styleClass='tab' text="Employee">
+      <content>
+        <fx:include fx:id="employee" source="Employee.fxml" />
+      </content>
+    </Tab>
+
   </TabPane>
 </AnchorPane>

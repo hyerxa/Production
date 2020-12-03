@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +14,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Controller for Product Line fxml page.
@@ -46,6 +47,24 @@ public class ProductLineController {
    */
   @FXML
   private TextField manufacturer;
+
+  @FXML
+  private TextField supportedAudioFormats;
+
+  @FXML
+  private TextField supportedPlaylistFormats;
+
+  @FXML
+  private TextField screenResolution;
+
+  @FXML
+  private TextField screenRefreshRate;
+
+  @FXML
+  private TextField screenResponseTime;
+
+  @FXML
+  private ChoiceBox<String> monitorType;
 
   /**
    * Table to display products.
@@ -84,6 +103,13 @@ public class ProductLineController {
   @FXML
   private void addProduct(ActionEvent event) {
     insertToDb();
+    productName.clear();
+    manufacturer.clear();
+    supportedAudioFormats.clear();
+    supportedPlaylistFormats.clear();
+    screenResolution.clear();
+    screenRefreshRate.clear();
+    screenResponseTime.clear();
   }
 
   ObservableList<Product> productLineList = FXCollections.observableArrayList();
@@ -122,32 +148,83 @@ public class ProductLineController {
       String man = manufacturer.getText();
       String type = itemType.getValue();
 
+      if (prodName.isEmpty() || man.isEmpty() || type == null) {
+        return;
+      }
+
+      boolean errorInput = false;
+
       switch (type) {
         case "AUDIO":
-          AudioPlayer tempAudio = new AudioPlayer(prodName, man);
-          mainController.addToListView(tempAudio);
+        case "AUDIOMOBILE":
+          String supportedAudio = supportedAudioFormats.getText();
+          String supportedPlaylist = supportedPlaylistFormats.getText();
+          if (type.equals("AUDIO")) {
+            AudioPlayer tempAudio = new AudioPlayer(prodName, man, ItemType.AUDIO, supportedAudio, supportedPlaylist);
+            mainController.addToListView(tempAudio);
+          } else {
+            AudioPlayer tempAudioMobile = new AudioPlayer(prodName, man, ItemType.AUDIOMOBILE, supportedAudio, supportedPlaylist);
+            mainController.addToListView(tempAudioMobile);
+          }
           break;
-
         case "VIDEO":
-          MoviePlayer tempVideo = new MoviePlayer(prodName, man);
-          mainController.addToListView(tempVideo);
+        case "VISUALMOBILE":
+          String screenRes = screenResolution.getText();
+          int screenRef = 0;
+          int screenResT = 0;
+          try {
+            screenRef = parseInt(screenRefreshRate.getText());
+          } catch (Exception e) {
+            System.out.println("Please enter a valid integer for screen refresh rate");
+            errorInput = true;
+          }
+
+          try {
+            screenResT = parseInt(screenResponseTime.getText());
+          } catch (Exception e) {
+            System.out.println("Please enter a valid integer for screen response time");
+            errorInput = true;
+          }
+
+          Screen screen = new Screen(screenRes, screenRef, screenResT);
+          String monStringType = monitorType.getValue();
+          MonitorType monType = MonitorType.LED;
+          switch (monStringType) {
+            case "LCD":
+              monType = MonitorType.LCD;
+              break;
+            case "LED":
+              monType = MonitorType.LED;
+              break;
+          }
+          if (!errorInput) {
+            if (type.equals("VIDEO")) {
+              MoviePlayer tempVideo = new MoviePlayer(prodName, man, ItemType.VISUAL, screen, monType);
+              mainController.addToListView(tempVideo);
+            } else {
+              MoviePlayer tempVisualMobile = new MoviePlayer(prodName, man, ItemType.VISUALMOBILE, screen, monType);
+              mainController.addToListView(tempVisualMobile);
+            }
+          }
           break;
       }
 
-      // Insert value into table
-      String sql = "INSERT INTO Product(type, manufacturer, name) VALUES (?,?,?)";
+      if (!errorInput) {
+        // Insert value into table
+        String sql = "INSERT INTO Product(type, manufacturer, name) VALUES (?,?,?)";
 
-      PreparedStatement preparedStatement = conn.prepareStatement(sql);
-      preparedStatement.setString(1, type);
-      preparedStatement.setString(2, man);
-      preparedStatement.setString(3, prodName);
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setString(1, type);
+        preparedStatement.setString(2, man);
+        preparedStatement.setString(3, prodName);
 
-      preparedStatement.executeUpdate();
-      retrieveFromDb();
+        preparedStatement.executeUpdate();
+        retrieveFromDb();
 
-      // STEP 4: Clean-up environment
-      stmt.close();
-      conn.close();
+        // STEP 4: Clean-up environment
+        stmt.close();
+        conn.close();
+      }
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
 
@@ -179,18 +256,8 @@ public class ProductLineController {
 
       ResultSet rs = stmt.executeQuery(sql2);
 
-      while (rs.next()) {
-        switch (rs.getString(3)) {
-          case "AUDIO":
-            productLineList.add(new AudioPlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
-            break;
-
-          case "VIDEO":
-            productLineList.add(new MoviePlayer(rs.getString(1), rs.getString(2), rs.getInt(4)));
-            break;
-        }
-        productTable.setItems(productLineList);
-      }
+      ProduceController.addToList(rs, productLineList);
+      productTable.setItems(productLineList);
 
       // STEP 4: Clean-up environment
       stmt.close();

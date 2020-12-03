@@ -4,11 +4,11 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="586.0" prefWidth="613.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProductionLogController">
+<AnchorPane prefHeight="766.0" prefWidth="737.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProductionLogController">
 
   <stylesheets>
     <URL value="@style.css" />
   </stylesheets>
 
-  <TextArea fx:id="txtProductionLog" layoutX="56.0" layoutY="82.0" prefHeight="391.0" prefWidth="506.0" />
+  <TextArea fx:id="txtProductionLog" layoutX="56.0" layoutY="82.0" prefHeight="616.0" prefWidth="628.0" />
 </AnchorPane>
